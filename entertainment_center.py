@@ -1,17 +1,21 @@
-from media import Movie
+"""Main file for the Movie Trailer Project proposed as part of Udacity's Full
+Web Developer Nanodegree"""
 import os
 import json
 import fresh_tomatoes
+from media import Movie
 
-# Load movies from file and create the related classes, returning them as a list
 def load_movies_from_file(path):
-    # Check if provided path exists, first the relative folders than the file itself
+    """Load movies from file and create the related classes, returning them
+    as a list"""
+    # Check if provided path exists, including relative folders
     split_path = path.split("/")[:-1]
     check_folder = ""
     for folder in split_path:
         check_folder += folder + "/"
         if not os.path.isdir(check_folder):
-            print("The directories specified do not exist, please check the path to the movie file.")
+            print("""The directory specified do not exist,
+                please check the path to the movie file.""")
             #Return empty movie list if failed to load file
             return []
 
@@ -19,16 +23,18 @@ def load_movies_from_file(path):
         # Open file, parse it as json
         with open(path) as movie_file:
             json_object = json.loads(movie_file.read())
-            movie_list=[]
+            movie_list = []
             for element in json_object:
-                movie_list.append(Movie(element["title"], element["poster"], element["trailer"],
-                                  element["date"],element["main_cast"]))
+                movie_list.append(Movie(element["title"], element["poster"],
+                                        element["trailer"], element["date"],
+                                        element["main_cast"]))
             return movie_list
     else:
-        print("There is no file to load movies from, please check the file provided.")
+        print("There is no file to load movies from, check provided file.")
 
-# Main catalog function, loads movies and prepare web page with related content
 def movie_catalog():
+    """Main catalog function, loads movies and prepare web page with related
+    content"""
     movie_list = load_movies_from_file("files/movies.json")
     #If the list isn't empty, try creating the web page
     if movie_list:
